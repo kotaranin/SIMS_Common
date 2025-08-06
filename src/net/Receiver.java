@@ -21,6 +21,10 @@ public class Receiver {
         this.in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
     }
 
+    public ObjectInputStream getIn() {
+        return in;
+    }
+
     public Object receive() throws ClassNotFoundException, IOException {
         return in.readObject();
     }
