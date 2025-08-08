@@ -5,9 +5,10 @@
 package domain;
 
 import java.io.Serializable;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
  *
  * @author Uros
  */
-public class ExamPeriod implements Serializable, AbstractDomainObject {
+public class ExamPeriod implements Serializable, AbstractDO {
 
     private Long idExamPeriod;
     private String name;
@@ -75,8 +76,8 @@ public class ExamPeriod implements Serializable, AbstractDomainObject {
     }
 
     @Override
-    public List<AbstractDomainObject> getList(ResultSet resultSet) throws Exception {
-        List<AbstractDomainObject> examPeriods = new LinkedList<>();
+    public List<AbstractDO> getList(ResultSet resultSet) throws Exception {
+        List<AbstractDO> examPeriods = new LinkedList<>();
         while (resultSet.next()) {
             ExamPeriod examPeriod = new ExamPeriod();
             examPeriod.setIdExamPeriod(resultSet.getLong(getTable() + ".id_exam_period"));
@@ -88,28 +89,40 @@ public class ExamPeriod implements Serializable, AbstractDomainObject {
     }
 
     @Override
-    public String getInsertColumns() {
-        return "name, start_date, end_date";
-    }
-
-    @Override
-    public String getInsertValues() {
-        return "'" + name + "', '" + startDate + "', '" + endDate + "'";
-    }
-
-    @Override
     public String getPrimaryKey() {
         return getTable() + ".id_exam_period = " + idExamPeriod;
     }
 
     @Override
-    public AbstractDomainObject getObject(ResultSet resultSet) throws Exception {
+    public AbstractDO getObject(ResultSet resultSet) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public String getUpdateValues() {
-        return "name = '" + name + "', start_date = '" + startDate + "', end_date = '" + endDate + "'";
+    public String getInsertParameters() {
+        return "?, ?, ?";
+    }
+
+    @Override
+    public String getUpdateParameters() {
+        return "name = ?, start_date = ?, end_date = ?";
+    }
+
+    @Override
+    public void prepareInsertStatement(PreparedStatement preparedStatement) throws Exception {
+        preparedStatement.setString(1, "name");
+        preparedStatement.setString(2, "start_date");
+        preparedStatement.setString(3, "end_date");
+        preparedStatement.setString(4, name);
+        preparedStatement.setString(5, startDate.toString());
+        preparedStatement.setString(6, endDate.toString());
+    }
+
+    @Override
+    public void prepareUpdateStatement(PreparedStatement preparedStatement) throws Exception {
+        preparedStatement.setString(1, name);
+        preparedStatement.setString(2, startDate.toString());
+        preparedStatement.setString(3, endDate.toString());
     }
 
 }

@@ -5,7 +5,9 @@
 package domain;
 
 import java.io.Serializable;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,19 +15,19 @@ import java.util.List;
  *
  * @author Uros
  */
-public class Report implements Serializable, AbstractDomainObject {
+public class Report implements Serializable, AbstractDO {
 
     private Long idReport;
     private String fileName;
-    private String filePath;
+    private byte[] fileContent;
 
     public Report() {
     }
 
-    public Report(Long idReport, String fileName, String filePath) {
+    public Report(Long idReport, String fileName, byte[] fileContent) {
         this.idReport = idReport;
         this.fileName = fileName;
-        this.filePath = filePath;
+        this.fileContent = fileContent;
     }
 
     public Long getIdReport() {
@@ -44,12 +46,12 @@ public class Report implements Serializable, AbstractDomainObject {
         this.fileName = fileName;
     }
 
-    public String getFilePath() {
-        return filePath;
+    public byte[] getFileContent() {
+        return fileContent;
     }
 
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
+    public void setFileContent(byte[] fileContent) {
+        this.fileContent = fileContent;
     }
 
     @Override
@@ -63,26 +65,16 @@ public class Report implements Serializable, AbstractDomainObject {
     }
 
     @Override
-    public List<AbstractDomainObject> getList(ResultSet resultSet) throws Exception {
-        List<AbstractDomainObject> reports = new LinkedList<>();
+    public List<AbstractDO> getList(ResultSet resultSet) throws Exception {
+        List<AbstractDO> reports = new LinkedList<>();
         while (resultSet.next()) {
             Report report = new Report();
             report.setIdReport(resultSet.getLong(getTable() + ".id_report"));
             report.setFileName(resultSet.getString(getTable() + ".file_name"));
-            report.setFilePath(resultSet.getString(getTable() + ".file_path"));
+            report.setFileContent(resultSet.getBytes(getTable() + ".file_content"));
             reports.add(report);
         }
         return reports;
-    }
-
-    @Override
-    public String getInsertColumns() {
-        return "file_name, file_path";
-    }
-
-    @Override
-    public String getInsertValues() {
-        return "'" + fileName + "', '" + filePath + "'";
     }
 
     @Override
@@ -91,13 +83,32 @@ public class Report implements Serializable, AbstractDomainObject {
     }
 
     @Override
-    public AbstractDomainObject getObject(ResultSet resultSet) throws Exception {
+    public AbstractDO getObject(ResultSet resultSet) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public String getUpdateValues() {
-        return "file_name = '" + fileName + "', file_path = '" + filePath + "'";
+    public String getInsertParameters() {
+        return "?, ?";
+    }
+
+    @Override
+    public String getUpdateParameters() {
+        return "file_name = ?, file_content = ?";
+    }
+
+    @Override
+    public void prepareInsertStatement(PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.setString(1, "file_name");
+        preparedStatement.setString(2, "file_content");
+        preparedStatement.setString(3, fileName);
+        preparedStatement.setBytes(4, fileContent);
+    }
+
+    @Override
+    public void prepareUpdateStatement(PreparedStatement preparedStatement) throws Exception {
+        preparedStatement.setString(1, fileName);
+        preparedStatement.setBytes(2, fileContent);
     }
 
 }

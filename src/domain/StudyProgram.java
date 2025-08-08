@@ -5,14 +5,17 @@
 package domain;
 
 import java.io.Serializable;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
  *
  * @author Uros
  */
-public class StudyProgram implements Serializable, AbstractDomainObject {
+public class StudyProgram implements Serializable, AbstractDO {
 
     private Long idStudyProgram;
     private String name;
@@ -62,18 +65,19 @@ public class StudyProgram implements Serializable, AbstractDomainObject {
     }
 
     @Override
-    public List<AbstractDomainObject> getList(ResultSet resultSet) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public String getInsertColumns() {
-        return "name, id_study_level";
-    }
-
-    @Override
-    public String getInsertValues() {
-        return "'" + name + "', " + studyLevel;
+    public List<AbstractDO> getList(ResultSet resultSet) throws Exception {
+        List<AbstractDO> studyPrograms = new LinkedList<>();
+        while (resultSet.next()) {
+            StudyProgram studyProgram = new StudyProgram();
+            studyProgram.setIdStudyProgram(resultSet.getLong(getTable() + ".id_study_program"));
+            studyProgram.setName(resultSet.getString(getTable() + ".name"));
+            StudyLevel studyLevel = new StudyLevel();
+            studyLevel.setIdStudyLevel(resultSet.getLong(studyLevel.getTable() + ".id_study_level"));
+            studyLevel.setName(resultSet.getString(studyLevel.getTable() + ".name"));
+            studyProgram.setStudyLevel(studyLevel);
+            studyPrograms.add(studyProgram);
+        }
+        return studyPrograms;
     }
 
     @Override
@@ -82,13 +86,32 @@ public class StudyProgram implements Serializable, AbstractDomainObject {
     }
 
     @Override
-    public AbstractDomainObject getObject(ResultSet resultSet) throws Exception {
+    public AbstractDO getObject(ResultSet resultSet) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public String getUpdateValues() {
-        return "name = '" + name + "', id_study_level = " + studyLevel.getIdStudyLevel();
+    public String getInsertParameters() {
+        return "?, ?";
+    }
+
+    @Override
+    public String getUpdateParameters() {
+        return "name = ?, id_study_level = ?";
+    }
+
+    @Override
+    public void prepareInsertStatement(PreparedStatement preparedStatement) throws Exception {
+        preparedStatement.setString(1, "name");
+        preparedStatement.setString(2, "id_study_level");
+        preparedStatement.setString(3, name);
+        preparedStatement.setLong(4, studyLevel.getIdStudyLevel());
+    }
+
+    @Override
+    public void prepareUpdateStatement(PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.setString(1, name);
+        preparedStatement.setLong(2, studyLevel.getIdStudyLevel());
     }
 
 }

@@ -9,5 +9,5 @@ package enums;
  * @author Uros
  */
 public enum Operation {
-    LOG_IN
+    LOG_IN, GET_ALL_REPORTS
 }

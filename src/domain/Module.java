@@ -5,14 +5,17 @@
 package domain;
 
 import java.io.Serializable;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
  *
  * @author Uros
  */
-public class Module implements Serializable, AbstractDomainObject {
+public class Module implements Serializable, AbstractDO {
 
     private Long idModule;
     private String name;
@@ -62,18 +65,23 @@ public class Module implements Serializable, AbstractDomainObject {
     }
 
     @Override
-    public List<AbstractDomainObject> getList(ResultSet resultSet) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public String getInsertColumns() {
-        return "name, id_study_program";
-    }
-
-    @Override
-    public String getInsertValues() {
-        return "'" + name + "', " + studyProgram.getIdStudyProgram();
+    public List<AbstractDO> getList(ResultSet resultSet) throws Exception {
+        List<AbstractDO> modules = new LinkedList<>();
+        while (resultSet.next()) {
+            Module module = new Module();
+            module.setIdModule(resultSet.getLong(getTable() + ".id_module"));
+            module.setName(resultSet.getString(getTable() + ".name"));
+            StudyProgram studyProgram = new StudyProgram();
+            studyProgram.setIdStudyProgram(resultSet.getLong(studyProgram.getTable() + ".id_study_program"));
+            studyProgram.setName(resultSet.getString(studyProgram.getTable() + ".name"));
+            StudyLevel studyLevel = new StudyLevel();
+            studyLevel.setIdStudyLevel(resultSet.getLong(studyLevel.getTable() + ".id_study_level"));
+            studyLevel.setName(resultSet.getString(studyLevel.getTable() + ".name"));
+            studyProgram.setStudyLevel(studyLevel);
+            module.setStudyProgram(studyProgram);
+            modules.add(module);
+        }
+        return modules;
     }
 
     @Override
@@ -82,13 +90,32 @@ public class Module implements Serializable, AbstractDomainObject {
     }
 
     @Override
-    public AbstractDomainObject getObject(ResultSet resultSet) throws Exception {
+    public AbstractDO getObject(ResultSet resultSet) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public String getUpdateValues() {
-        return "name = '" + name + "', id_study_program = " + studyProgram.getIdStudyProgram();
+    public String getInsertParameters() {
+        return "?, ?";
+    }
+
+    @Override
+    public String getUpdateParameters() {
+        return "name = ?, id_study_program = ?";
+    }
+
+    @Override
+    public void prepareInsertStatement(PreparedStatement preparedStatement) throws Exception {
+        preparedStatement.setString(1, "name");
+        preparedStatement.setString(2, "id_study_program");
+        preparedStatement.setString(3, name);
+        preparedStatement.setLong(4, studyProgram.getIdStudyProgram());
+    }
+
+    @Override
+    public void prepareUpdateStatement(PreparedStatement preparedStatement) throws Exception {
+        preparedStatement.setString(1, name);
+        preparedStatement.setLong(2, studyProgram.getIdStudyProgram());
     }
 
 }

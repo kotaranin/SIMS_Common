@@ -5,15 +5,18 @@
 package domain;
 
 import java.io.Serializable;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
  *
  * @author Uros
  */
-public class Internship implements Serializable, AbstractDomainObject {
+public class Internship implements Serializable, AbstractDO {
 
     private Long idInternship;
     private LocalDate startDate;
@@ -143,18 +146,85 @@ public class Internship implements Serializable, AbstractDomainObject {
     }
 
     @Override
-    public List<AbstractDomainObject> getList(ResultSet resultSet) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public String getInsertColumns() {
-        return "start_date, end_date, defense_date, grade, id_teacher, id_exam_period, id_report, id_student_officer, id_company, id_student";
-    }
-
-    @Override
-    public String getInsertValues() {
-        return "'" + startDate + "', '" + endDate + "', '" + defenseDate + "', " + grade + ", " + teacher.getIdTeacher() + ", " + examPeriod.getIdExamPeriod() + ", " + report.getIdReport() + ", " + studentOfficer.getIdStudentOfficer() + ", " + company.getIdCompany() + ", " + student.getIdStudent();
+    public List<AbstractDO> getList(ResultSet resultSet) throws Exception {
+        List<AbstractDO> internships = new LinkedList<>();
+        while (resultSet.next()) {
+            Internship internship = new Internship();
+            internship.setIdInternship(resultSet.getLong(getTable()+".id_internship"));
+            internship.setStartDate(LocalDate.parse(resultSet.getString(getTable()+".start_date")));
+            internship.setEndDate(LocalDate.parse(resultSet.getString(getTable()+".end_date")));
+            internship.setDefenseDate(LocalDate.parse(resultSet.getString(getTable()+".defense_date")));
+            internship.setGrade(resultSet.getInt(getTable()+".grade"));
+            Teacher teacher = new Teacher();
+            teacher.setIdTeacher(resultSet.getLong(teacher.getTable() + ".id_teacher"));
+            teacher.setFirstName(resultSet.getString(teacher.getTable() + ".first_name"));
+            teacher.setLastName(resultSet.getString(teacher.getTable() + ".last_name"));
+            internship.setTeacher(teacher);
+            ExamPeriod examPeriod = new ExamPeriod();
+            examPeriod.setIdExamPeriod(resultSet.getLong(examPeriod.getTable() + ".id_exam_period"));
+            examPeriod.setStartDate(LocalDate.parse(resultSet.getString(examPeriod.getTable() + ".start_date")));
+            examPeriod.setEndDate(LocalDate.parse(resultSet.getString(examPeriod.getTable() + ".end_date")));
+            internship.setExamPeriod(examPeriod);
+            Report report = new Report();
+            report.setIdReport(resultSet.getLong(report.getTable() + ".id_report"));
+            report.setFileName(resultSet.getString(report.getTable() + ".file_name"));
+            report.setFileContent(resultSet.getBytes(report.getTable() + ".file_content"));
+            internship.setReport(report);
+            StudentOfficer studentOfficer = new StudentOfficer();
+            studentOfficer.setIdStudentOfficer(resultSet.getLong(studentOfficer.getTable() + ".id_student_officer"));
+            studentOfficer.setFirstName(resultSet.getString(studentOfficer.getTable() + ".first_name"));
+            studentOfficer.setLastName(resultSet.getString(studentOfficer.getTable() + ".last_name"));
+            studentOfficer.setEmail(resultSet.getString(studentOfficer.getTable() + ".email"));
+            studentOfficer.setPassword(resultSet.getString(studentOfficer.getTable() + ".password"));
+            StudyLevel studyLevel = new StudyLevel();
+            studyLevel.setIdStudyLevel(resultSet.getLong(studyLevel.getTable() + ".id_study_level"));
+            studyLevel.setName(resultSet.getString(studyLevel.getTable() + ".name"));
+            studentOfficer.setStudyLevel(studyLevel);
+            internship.setStudentOfficer(studentOfficer);
+            Company company = new Company();
+            company.setIdCompany(resultSet.getLong(company.getTable()+".id_city"));
+            company.setName(resultSet.getString(company.getTable() + ".name"));
+            company.setAddress(resultSet.getString(company.getTable() + ".address"));
+            City city = new City();
+            city.setIdCity(resultSet.getLong(city.getTable() + ".id_city"));
+            city.setName(resultSet.getString(city.getTable() + ".name"));
+            Country country = new Country();
+            country.setIdCountry(resultSet.getLong(country.getTable() + ".id_country"));
+            country.setName(resultSet.getString(country.getTable() + ".name"));
+            city.setCountry(country);
+            company.setCity(city);
+            internship.setCompany(company);
+            Student student = new Student();
+            student.setIdStudent(resultSet.getLong(getTable() + ".id_student"));
+            student.setIndex(resultSet.getString(getTable() + ".index"));
+            student.setFirstName(resultSet.getString(getTable() + ".first_name"));
+            student.setLastName(resultSet.getString(getTable() + ".last_name"));
+            student.setDateOfBirth(LocalDate.parse(resultSet.getString(getTable() + ".date_of_birth")));
+            student.setYearOfStudy(resultSet.getInt(getTable() + ".year_of_study"));
+            StudyProgram studyProgram = new StudyProgram();
+            studyProgram.setIdStudyProgram(resultSet.getLong(studyProgram.getTable() + ".id_study_program"));
+            studyProgram.setName(resultSet.getString(studyProgram.getTable() + ".name"));
+            StudyLevel level = new StudyLevel();
+            level.setIdStudyLevel(resultSet.getLong(level.getTable() + ".id_study_level"));
+            level.setName(resultSet.getString(level.getTable() + ".name"));
+            studyProgram.setStudyLevel(level);
+            student.setStudyProgram(studyProgram);
+            Module module = new Module();
+            module.setIdModule(resultSet.getLong(module.getTable() + ".id_module"));
+            module.setName(resultSet.getString(module.getTable() + ".name"));
+            StudyProgram moduleProgram = new StudyProgram();
+            moduleProgram.setIdStudyProgram(resultSet.getLong(moduleProgram.getTable() + ".id_study_program"));
+            moduleProgram.setName(resultSet.getString(moduleProgram.getTable() + ".name"));
+            StudyLevel levelProgram = new StudyLevel();
+            levelProgram.setIdStudyLevel(resultSet.getLong(levelProgram.getTable() + ".id_study_level"));
+            levelProgram.setName(resultSet.getString(levelProgram.getTable() + ".name"));
+            moduleProgram.setStudyLevel(levelProgram);
+            module.setStudyProgram(moduleProgram);
+            student.setModule(module);
+            internship.setStudent(student);
+            internships.add(internship);
+        }
+        return internships;
     }
 
     @Override
@@ -163,13 +233,56 @@ public class Internship implements Serializable, AbstractDomainObject {
     }
 
     @Override
-    public AbstractDomainObject getObject(ResultSet resultSet) throws Exception {
+    public AbstractDO getObject(ResultSet resultSet) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public String getUpdateValues() {
-        return "start_date = '" + startDate + "', end_date = '" + endDate + "', defense_date = '" + defenseDate + "', grade = " + grade + ", id_teacher = " + teacher.getIdTeacher() + ", id_exam_period = " + examPeriod.getIdExamPeriod() + ", id_report = " + report.getIdReport() + ", id_student_officer = " + studentOfficer.getIdStudentOfficer() + ", id_company = " + company.getIdCompany() + ", id_student = " + student.getIdStudent();
+    public String getInsertParameters() {
+        return "?, ?, ?, ?, ?, ?, ?, ?, ?, ?";
+    }
+
+    @Override
+    public String getUpdateParameters() {
+        return "start_date = ?, end_date = ?, defense_date = ?, grade = ?, id_teacher = ?, id_exam_period = ?, id_report = ?, id_student_officer = ?, id_company = ?, id_student = ?";
+    }
+
+    @Override
+    public void prepareInsertStatement(PreparedStatement preparedStatement) throws Exception {
+        preparedStatement.setString(1, "start_date");
+        preparedStatement.setString(2, "end_date");
+        preparedStatement.setString(3, "defense_date");
+        preparedStatement.setString(4, "grade");
+        preparedStatement.setString(5, "id_teacher");
+        preparedStatement.setString(6, "id_exam_period");
+        preparedStatement.setString(7, "id_report");
+        preparedStatement.setString(8, "id_student_officer");
+        preparedStatement.setString(9, "id_company");
+        preparedStatement.setString(10, "id_student");
+        preparedStatement.setString(11, startDate.toString());
+        preparedStatement.setString(12, endDate.toString());
+        preparedStatement.setString(13, defenseDate.toString());
+        preparedStatement.setInt(14, grade);
+        preparedStatement.setLong(15, teacher.getIdTeacher());
+        preparedStatement.setLong(16, examPeriod.getIdExamPeriod());
+        preparedStatement.setLong(17, report.getIdReport());
+        preparedStatement.setLong(18, studentOfficer.getIdStudentOfficer());
+        preparedStatement.setLong(19, company.getIdCompany());
+        preparedStatement.setLong(20, student.getIdStudent());
+    }
+
+    @Override
+    public void prepareUpdateStatement(PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.setString(1, startDate.toString());
+        preparedStatement.setString(2, endDate.toString());
+        preparedStatement.setString(3, defenseDate.toString());
+        preparedStatement.setInt(4, grade);
+        preparedStatement.setLong(5, teacher.getIdTeacher());
+        preparedStatement.setLong(6, examPeriod.getIdExamPeriod());
+        preparedStatement.setLong(7, report.getIdReport());
+        preparedStatement.setLong(8, studentOfficer.getIdStudentOfficer());
+        preparedStatement.setLong(9, company.getIdCompany());
+        preparedStatement.setLong(10, student.getIdStudent());
     }
 
 }

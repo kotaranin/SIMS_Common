@@ -5,14 +5,18 @@
 package domain;
 
 import java.io.Serializable;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
  * @author Uros
  */
-public class StudentOfficer implements Serializable, AbstractDomainObject {
+public class StudentOfficer implements Serializable, AbstractDO {
 
     private Long idStudentOfficer;
     private String firstName;
@@ -87,23 +91,53 @@ public class StudentOfficer implements Serializable, AbstractDomainObject {
     }
 
     @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 71 * hash + Objects.hashCode(this.email);
+        hash = 71 * hash + Objects.hashCode(this.password);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final StudentOfficer other = (StudentOfficer) obj;
+        if (!Objects.equals(this.email, other.email)) {
+            return false;
+        }
+        return Objects.equals(this.password, other.password);
+    }
+
+    @Override
     public String getTable() {
         return "student_officer";
     }
 
     @Override
-    public List<AbstractDomainObject> getList(ResultSet resultSet) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public String getInsertColumns() {
-        return "first_name, last_name, email, password, id_study_level";
-    }
-
-    @Override
-    public String getInsertValues() {
-        return "'" + firstName + "', '" + lastName + "', '" + email + "', '" + password + "', " + studyLevel.getIdStudyLevel();
+    public List<AbstractDO> getList(ResultSet resultSet) throws Exception {
+        List<AbstractDO> studentOfficers = new LinkedList<>();
+        while (resultSet.next()) {
+            StudentOfficer studentOfficer = new StudentOfficer();
+            studentOfficer.setIdStudentOfficer(resultSet.getLong(getTable() + ".id_student_officer"));
+            studentOfficer.setFirstName(resultSet.getString(getTable() + ".first_name"));
+            studentOfficer.setLastName(resultSet.getString(getTable() + ".last_name"));
+            studentOfficer.setEmail(resultSet.getString(getTable() + ".email"));
+            studentOfficer.setPassword(resultSet.getString(getTable() + ".password"));
+            StudyLevel studyLevel = new StudyLevel();
+            studyLevel.setIdStudyLevel(resultSet.getLong(studyLevel.getTable() + ".id_study_level"));
+            studyLevel.setName(resultSet.getString(studyLevel.getTable() + ".name"));
+            studentOfficer.setStudyLevel(studyLevel);
+            studentOfficers.add(studentOfficer);
+        }
+        return studentOfficers;
     }
 
     @Override
@@ -112,13 +146,41 @@ public class StudentOfficer implements Serializable, AbstractDomainObject {
     }
 
     @Override
-    public AbstractDomainObject getObject(ResultSet resultSet) throws Exception {
+    public AbstractDO getObject(ResultSet resultSet) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public String getUpdateValues() {
-        return "first_name = '" + firstName + "', last_name = '" + lastName + "', email = '" + email + "', password = '" + password + "', id_study_level = " + studyLevel.getIdStudyLevel();
+    public String getInsertParameters() {
+        return "?, ?, ?, ?, ?";
+    }
+
+    @Override
+    public String getUpdateParameters() {
+        return "first_name = ?, last_name = ?, email = ?, password = ?, id_study_level = ?";
+    }
+
+    @Override
+    public void prepareInsertStatement(PreparedStatement preparedStatement) throws Exception {
+        preparedStatement.setString(1, "first_name");
+        preparedStatement.setString(2, "last_name");
+        preparedStatement.setString(3, "email");
+        preparedStatement.setString(4, "password");
+        preparedStatement.setString(5, "id_study_level");
+        preparedStatement.setString(6, firstName);
+        preparedStatement.setString(7, lastName);
+        preparedStatement.setString(8, email);
+        preparedStatement.setString(9, password);
+        preparedStatement.setLong(10, studyLevel.getIdStudyLevel());
+    }
+
+    @Override
+    public void prepareUpdateStatement(PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.setString(1, firstName);
+        preparedStatement.setString(2, lastName);
+        preparedStatement.setString(3, email);
+        preparedStatement.setString(4, password);
+        preparedStatement.setLong(5, studyLevel.getIdStudyLevel());
     }
 
 }

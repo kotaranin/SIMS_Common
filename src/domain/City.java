@@ -5,14 +5,17 @@
 package domain;
 
 import java.io.Serializable;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
  *
  * @author Uros
  */
-public class City implements Serializable, AbstractDomainObject {
+public class City implements Serializable, AbstractDO {
 
     private Long idCity;
     private String name;
@@ -62,19 +65,21 @@ public class City implements Serializable, AbstractDomainObject {
     }
 
     @Override
-    public List<AbstractDomainObject> getList(ResultSet resultSet) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public List<AbstractDO> getList(ResultSet resultSet) throws Exception {
+        List<AbstractDO> cities = new LinkedList<>();
+        while (resultSet.next()) {
+            City city = new City();
+            city.setIdCity(resultSet.getLong(getTable() + ".id_city"));
+            city.setName(resultSet.getString(getTable() + ".name"));
+            Country country = new Country();
+            country.setIdCountry(resultSet.getLong(country.getTable() + ".id_country"));
+            country.setName(resultSet.getString(country.getTable() + ".name"));
+            city.setCountry(country);
+            cities.add(city);
+        }
+        return cities;
     }
 
-    @Override
-    public String getInsertColumns() {
-        return "name, id_country";
-    }
-
-    @Override
-    public String getInsertValues() {
-        return "'" + name + "', " + country.getIdCountry();
-    }
 
     @Override
     public String getPrimaryKey() {
@@ -82,13 +87,32 @@ public class City implements Serializable, AbstractDomainObject {
     }
 
     @Override
-    public AbstractDomainObject getObject(ResultSet resultSet) throws Exception {
+    public AbstractDO getObject(ResultSet resultSet) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public String getUpdateValues() {
-        return "name = '" + name + "', id_country = " + country.getIdCountry();
+    public String getInsertParameters() {
+        return "?, ?";
+    }
+
+    @Override
+    public String getUpdateParameters() {
+        return "name = ?, id_country = ?";
+    }
+
+    @Override
+    public void prepareInsertStatement(PreparedStatement preparedStatement) throws Exception {
+        preparedStatement.setString(1, "name");
+        preparedStatement.setString(2, "id_country");
+        preparedStatement.setString(3, name);
+        preparedStatement.setLong(4, country.getIdCountry());
+    }
+
+    @Override
+    public void prepareUpdateStatement(PreparedStatement preparedStatement) throws Exception {
+        preparedStatement.setString(1, name);
+        preparedStatement.setLong(2, country.getIdCountry());
     }
 
 }

@@ -5,7 +5,9 @@
 package domain;
 
 import java.io.Serializable;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,7 +15,7 @@ import java.util.List;
  *
  * @author Uros
  */
-public class Teacher implements Serializable, AbstractDomainObject {
+public class Teacher implements Serializable, AbstractDO {
 
     private Long idTeacher;
     private String firstName;
@@ -63,8 +65,8 @@ public class Teacher implements Serializable, AbstractDomainObject {
     }
 
     @Override
-    public List<AbstractDomainObject> getList(ResultSet resultSet) throws Exception {
-        List<AbstractDomainObject> teachers = new LinkedList<>();
+    public List<AbstractDO> getList(ResultSet resultSet) throws Exception {
+        List<AbstractDO> teachers = new LinkedList<>();
         while (resultSet.next()) {
             Teacher teacher = new Teacher();
             teacher.setIdTeacher(resultSet.getLong(getTable() + ".id_teacher"));
@@ -76,28 +78,37 @@ public class Teacher implements Serializable, AbstractDomainObject {
     }
 
     @Override
-    public String getInsertColumns() {
-        return "first_name, last_name";
-    }
-
-    @Override
-    public String getInsertValues() {
-        return "'" + firstName + "', '" + lastName + "'";
-    }
-
-    @Override
     public String getPrimaryKey() {
         return getTable() + ".id_teacher = " + idTeacher;
     }
 
     @Override
-    public AbstractDomainObject getObject(ResultSet resultSet) throws Exception {
+    public AbstractDO getObject(ResultSet resultSet) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public String getUpdateValues() {
-        return "first_name = '" + firstName + "', last_name = '" + lastName + "'";
+    public String getInsertParameters() {
+        return "?, ?";
+    }
+
+    @Override
+    public String getUpdateParameters() {
+        return "first_name = ?, last_name = ?";
+    }
+
+    @Override
+    public void prepareInsertStatement(PreparedStatement preparedStatement) throws Exception {
+        preparedStatement.setString(1, "first_name");
+        preparedStatement.setString(2, "last_name");
+        preparedStatement.setString(3, firstName);
+        preparedStatement.setString(4, lastName);
+    }
+
+    @Override
+    public void prepareUpdateStatement(PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.setString(1, firstName);
+        preparedStatement.setString(2, lastName);
     }
 
 }
