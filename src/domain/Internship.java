@@ -248,31 +248,7 @@ public class Internship implements Serializable, AbstractDO {
     }
 
     @Override
-    public void prepareInsertStatement(PreparedStatement preparedStatement) throws Exception {
-        preparedStatement.setString(1, "start_date");
-        preparedStatement.setString(2, "end_date");
-        preparedStatement.setString(3, "defense_date");
-        preparedStatement.setString(4, "grade");
-        preparedStatement.setString(5, "id_teacher");
-        preparedStatement.setString(6, "id_exam_period");
-        preparedStatement.setString(7, "id_report");
-        preparedStatement.setString(8, "id_student_officer");
-        preparedStatement.setString(9, "id_company");
-        preparedStatement.setString(10, "id_student");
-        preparedStatement.setString(11, startDate.toString());
-        preparedStatement.setString(12, endDate.toString());
-        preparedStatement.setString(13, defenseDate.toString());
-        preparedStatement.setInt(14, grade);
-        preparedStatement.setLong(15, teacher.getIdTeacher());
-        preparedStatement.setLong(16, examPeriod.getIdExamPeriod());
-        preparedStatement.setLong(17, report.getIdReport());
-        preparedStatement.setLong(18, studentOfficer.getIdStudentOfficer());
-        preparedStatement.setLong(19, company.getIdCompany());
-        preparedStatement.setLong(20, student.getIdStudent());
-    }
-
-    @Override
-    public void prepareUpdateStatement(PreparedStatement preparedStatement) throws SQLException {
+    public void prepareStatement(PreparedStatement preparedStatement) throws SQLException {
         preparedStatement.setString(1, startDate.toString());
         preparedStatement.setString(2, endDate.toString());
         preparedStatement.setString(3, defenseDate.toString());
@@ -283,6 +259,11 @@ public class Internship implements Serializable, AbstractDO {
         preparedStatement.setLong(8, studentOfficer.getIdStudentOfficer());
         preparedStatement.setLong(9, company.getIdCompany());
         preparedStatement.setLong(10, student.getIdStudent());
+    }
+
+    @Override
+    public String getInsertColumns() {
+        return "start_date, end_date, defense_date, grade, id_teacher, id_exam_period, id_report, id_student_officer, id_company, id_student";
     }
 
 }

@@ -104,17 +104,14 @@ public class Module implements Serializable, AbstractDO {
     }
 
     @Override
-    public void prepareInsertStatement(PreparedStatement preparedStatement) throws Exception {
-        preparedStatement.setString(1, "name");
-        preparedStatement.setString(2, "id_study_program");
-        preparedStatement.setString(3, name);
-        preparedStatement.setLong(4, studyProgram.getIdStudyProgram());
+    public void prepareStatement(PreparedStatement preparedStatement) throws Exception {
+        preparedStatement.setString(1, name);
+        preparedStatement.setLong(2, studyProgram.getIdStudyProgram());
     }
 
     @Override
-    public void prepareUpdateStatement(PreparedStatement preparedStatement) throws Exception {
-        preparedStatement.setString(1, name);
-        preparedStatement.setLong(2, studyProgram.getIdStudyProgram());
+    public String getInsertColumns() {
+        return "name, id_study_program";
     }
 
 }

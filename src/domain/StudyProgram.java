@@ -101,17 +101,14 @@ public class StudyProgram implements Serializable, AbstractDO {
     }
 
     @Override
-    public void prepareInsertStatement(PreparedStatement preparedStatement) throws Exception {
-        preparedStatement.setString(1, "name");
-        preparedStatement.setString(2, "id_study_level");
-        preparedStatement.setString(3, name);
-        preparedStatement.setLong(4, studyLevel.getIdStudyLevel());
+    public void prepareStatement(PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.setString(1, name);
+        preparedStatement.setLong(2, studyLevel.getIdStudyLevel());
     }
 
     @Override
-    public void prepareUpdateStatement(PreparedStatement preparedStatement) throws SQLException {
-        preparedStatement.setString(1, name);
-        preparedStatement.setLong(2, studyLevel.getIdStudyLevel());
+    public String getInsertColumns() {
+        return "name, id_study_level";
     }
 
 }

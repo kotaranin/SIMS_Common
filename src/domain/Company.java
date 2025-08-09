@@ -7,7 +7,6 @@ package domain;
 import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -116,20 +115,15 @@ public class Company implements Serializable, AbstractDO {
     }
 
     @Override
-    public void prepareInsertStatement(PreparedStatement preparedStatement) throws Exception {
-        preparedStatement.setString(1, "name");
-        preparedStatement.setString(2, "address");
-        preparedStatement.setString(3, "id_city");
-        preparedStatement.setString(4, name);
-        preparedStatement.setString(5, address);
-        preparedStatement.setLong(6, city.getIdCity());
-    }
-
-    @Override
-    public void prepareUpdateStatement(PreparedStatement preparedStatement) throws Exception {
+    public void prepareStatement(PreparedStatement preparedStatement) throws Exception {
         preparedStatement.setString(1, name);
         preparedStatement.setString(2, address);
         preparedStatement.setLong(3, city.getIdCity());
+    }
+
+    @Override
+    public String getInsertColumns() {
+        return "name, address, id_city";
     }
 
 }

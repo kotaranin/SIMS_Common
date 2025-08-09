@@ -182,27 +182,7 @@ public class Student implements Serializable, AbstractDO {
     }
 
     @Override
-    public void prepareInsertStatement(PreparedStatement preparedStatement) throws Exception {
-        preparedStatement.setString(1, "index");
-        preparedStatement.setString(2, "first_name");
-        preparedStatement.setString(3, "last_name");
-        preparedStatement.setString(4, "date_of_birth");
-        preparedStatement.setString(5, "year_of_study");
-        preparedStatement.setString(6, "id_city");
-        preparedStatement.setString(7, "id_study_program");
-        preparedStatement.setString(8, "id_module");
-        preparedStatement.setString(9, index);
-        preparedStatement.setString(10, firstName);
-        preparedStatement.setString(11, lastName);
-        preparedStatement.setString(12, dateOfBirth.toString());
-        preparedStatement.setInt(13, yearOfStudy);
-        preparedStatement.setLong(14, city.getIdCity());
-        preparedStatement.setLong(15, studyProgram.getIdStudyProgram());
-        preparedStatement.setLong(16, module.getIdModule());
-    }
-
-    @Override
-    public void prepareUpdateStatement(PreparedStatement preparedStatement) throws Exception {
+    public void prepareStatement(PreparedStatement preparedStatement) throws Exception {
         preparedStatement.setString(1, index);
         preparedStatement.setString(2, firstName);
         preparedStatement.setString(3, lastName);
@@ -211,6 +191,11 @@ public class Student implements Serializable, AbstractDO {
         preparedStatement.setLong(6, city.getIdCity());
         preparedStatement.setLong(7, studyProgram.getIdStudyProgram());
         preparedStatement.setLong(8, module.getIdModule());
+    }
+
+    @Override
+    public String getInsertColumns() {
+        return "index, first_name, last_name, date_of_birth, year_of_study, id_city, id_study_program, id_module";
     }
 
 }

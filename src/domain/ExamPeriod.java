@@ -109,20 +109,15 @@ public class ExamPeriod implements Serializable, AbstractDO {
     }
 
     @Override
-    public void prepareInsertStatement(PreparedStatement preparedStatement) throws Exception {
-        preparedStatement.setString(1, "name");
-        preparedStatement.setString(2, "start_date");
-        preparedStatement.setString(3, "end_date");
-        preparedStatement.setString(4, name);
-        preparedStatement.setString(5, startDate.toString());
-        preparedStatement.setString(6, endDate.toString());
-    }
-
-    @Override
-    public void prepareUpdateStatement(PreparedStatement preparedStatement) throws Exception {
+    public void prepareStatement(PreparedStatement preparedStatement) throws Exception {
         preparedStatement.setString(1, name);
         preparedStatement.setString(2, startDate.toString());
         preparedStatement.setString(3, endDate.toString());
+    }
+
+    @Override
+    public String getInsertColumns() {
+        return "name, start_date, end_date";
     }
 
 }

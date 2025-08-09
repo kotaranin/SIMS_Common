@@ -23,12 +23,11 @@ public interface AbstractDO extends Serializable {
 
     public AbstractDO getObject(ResultSet resultSet) throws Exception;
 
+    public String getInsertColumns();
+
     public String getInsertParameters();
 
     public String getUpdateParameters();
 
-    public void prepareInsertStatement(PreparedStatement preparedStatement) throws Exception;
-
-    public void prepareUpdateStatement(PreparedStatement preparedStatement) throws Exception;
-
+    public void prepareStatement(PreparedStatement preparedStatement) throws Exception;
 }

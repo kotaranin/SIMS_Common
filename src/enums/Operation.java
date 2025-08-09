@@ -9,5 +9,5 @@ package enums;
  * @author Uros
  */
 public enum Operation {
-    LOG_IN, GET_ALL_REPORTS, DELETE_REPORT
+    LOG_IN, GET_ALL_REPORTS, DELETE_REPORT, INSERT_REPORT, UPDATE_REPORT, SEARCH_REPORTS
 }

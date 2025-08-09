@@ -102,17 +102,14 @@ public class City implements Serializable, AbstractDO {
     }
 
     @Override
-    public void prepareInsertStatement(PreparedStatement preparedStatement) throws Exception {
-        preparedStatement.setString(1, "name");
-        preparedStatement.setString(2, "id_country");
-        preparedStatement.setString(3, name);
-        preparedStatement.setLong(4, country.getIdCountry());
+    public void prepareStatement(PreparedStatement preparedStatement) throws Exception {
+        preparedStatement.setString(1, name);
+        preparedStatement.setLong(2, country.getIdCountry());
     }
 
     @Override
-    public void prepareUpdateStatement(PreparedStatement preparedStatement) throws Exception {
-        preparedStatement.setString(1, name);
-        preparedStatement.setLong(2, country.getIdCountry());
+    public String getInsertColumns() {
+        return "name, id_country";
     }
 
 }

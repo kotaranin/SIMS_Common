@@ -161,26 +161,17 @@ public class StudentOfficer implements Serializable, AbstractDO {
     }
 
     @Override
-    public void prepareInsertStatement(PreparedStatement preparedStatement) throws Exception {
-        preparedStatement.setString(1, "first_name");
-        preparedStatement.setString(2, "last_name");
-        preparedStatement.setString(3, "email");
-        preparedStatement.setString(4, "password");
-        preparedStatement.setString(5, "id_study_level");
-        preparedStatement.setString(6, firstName);
-        preparedStatement.setString(7, lastName);
-        preparedStatement.setString(8, email);
-        preparedStatement.setString(9, password);
-        preparedStatement.setLong(10, studyLevel.getIdStudyLevel());
-    }
-
-    @Override
-    public void prepareUpdateStatement(PreparedStatement preparedStatement) throws SQLException {
+    public void prepareStatement(PreparedStatement preparedStatement) throws SQLException {
         preparedStatement.setString(1, firstName);
         preparedStatement.setString(2, lastName);
         preparedStatement.setString(3, email);
         preparedStatement.setString(4, password);
         preparedStatement.setLong(5, studyLevel.getIdStudyLevel());
+    }
+
+    @Override
+    public String getInsertColumns() {
+        return "first_name, last_name, email, password, id_study_level";
     }
 
 }

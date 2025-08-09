@@ -98,17 +98,13 @@ public class Report implements Serializable, AbstractDO {
     }
 
     @Override
-    public void prepareInsertStatement(PreparedStatement preparedStatement) throws SQLException {
-        preparedStatement.setString(1, "file_name");
-        preparedStatement.setString(2, "file_content");
-        preparedStatement.setString(3, fileName);
-        preparedStatement.setBytes(4, fileContent);
-    }
-
-    @Override
-    public void prepareUpdateStatement(PreparedStatement preparedStatement) throws Exception {
+    public void prepareStatement(PreparedStatement preparedStatement) throws Exception {
         preparedStatement.setString(1, fileName);
         preparedStatement.setBytes(2, fileContent);
     }
 
+    @Override
+    public String getInsertColumns() {
+        return "file_name, file_content";
+    }
 }

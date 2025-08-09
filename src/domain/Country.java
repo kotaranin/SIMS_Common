@@ -87,14 +87,13 @@ public class Country implements Serializable, AbstractDO {
     }
 
     @Override
-    public void prepareInsertStatement(PreparedStatement preparedStatement) throws Exception {
-        preparedStatement.setString(1, "name");
-        preparedStatement.setString(2, name);
+    public void prepareStatement(PreparedStatement preparedStatement) throws Exception {
+        preparedStatement.setString(1, name);
     }
 
     @Override
-    public void prepareUpdateStatement(PreparedStatement preparedStatement) throws Exception {
-        preparedStatement.setString(1, name);
+    public String getInsertColumns() {
+        return "name";
     }
 
 }

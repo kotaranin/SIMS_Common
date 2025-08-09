@@ -98,17 +98,14 @@ public class Teacher implements Serializable, AbstractDO {
     }
 
     @Override
-    public void prepareInsertStatement(PreparedStatement preparedStatement) throws Exception {
-        preparedStatement.setString(1, "first_name");
-        preparedStatement.setString(2, "last_name");
-        preparedStatement.setString(3, firstName);
-        preparedStatement.setString(4, lastName);
+    public void prepareStatement(PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.setString(1, firstName);
+        preparedStatement.setString(2, lastName);
     }
 
     @Override
-    public void prepareUpdateStatement(PreparedStatement preparedStatement) throws SQLException {
-        preparedStatement.setString(1, firstName);
-        preparedStatement.setString(2, lastName);
+    public String getInsertColumns() {
+        return "first_name, last_name";
     }
 
 }
