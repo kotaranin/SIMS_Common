@@ -81,6 +81,7 @@ public class ExamPeriod implements Serializable, AbstractDO {
         while (resultSet.next()) {
             ExamPeriod examPeriod = new ExamPeriod();
             examPeriod.setIdExamPeriod(resultSet.getLong(getTable() + ".id_exam_period"));
+            examPeriod.setName(resultSet.getString(getTable() + ".name"));
             examPeriod.setStartDate(LocalDate.parse(resultSet.getString(getTable() + ".start_date")));
             examPeriod.setEndDate(LocalDate.parse(resultSet.getString(getTable() + ".end_date")));
             examPeriods.add(examPeriod);
