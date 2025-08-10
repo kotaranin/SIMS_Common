@@ -56,7 +56,7 @@ public class Teacher implements Serializable, AbstractDO {
 
     @Override
     public String toString() {
-        return firstName + " " + lastName;
+        return firstName;
     }
 
     @Override
