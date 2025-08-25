@@ -167,11 +167,6 @@ public class Student implements Serializable, AbstractDO {
     }
 
     @Override
-    public AbstractDO getObject(ResultSet resultSet) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
     public String getInsertParameters() {
         return "?, ?, ?, ?, ?, ?, ?, ?";
     }

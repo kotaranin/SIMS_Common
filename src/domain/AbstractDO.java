@@ -21,8 +21,6 @@ public interface AbstractDO extends Serializable {
 
     public String getPrimaryKey();
 
-    public AbstractDO getObject(ResultSet resultSet) throws Exception;
-
     public String getInsertColumns();
 
     public String getInsertParameters();

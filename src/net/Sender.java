@@ -27,6 +27,7 @@ public class Sender {
     }
 
     public void send(Object object) throws IOException {
+        out.reset();
         out.writeObject(object);
         out.flush();
     }

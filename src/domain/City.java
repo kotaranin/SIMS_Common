@@ -7,7 +7,6 @@ package domain;
 import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -80,15 +79,9 @@ public class City implements Serializable, AbstractDO {
         return cities;
     }
 
-
     @Override
     public String getPrimaryKey() {
-        return getTable() + ".id_city = " + idCity;
-    }
-
-    @Override
-    public AbstractDO getObject(ResultSet resultSet) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return getTable() + ".id_city = " + idCity + " AND " + getTable() + ".id_country = " + country.getIdCountry();
     }
 
     @Override

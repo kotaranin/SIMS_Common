@@ -7,7 +7,6 @@ package domain;
 import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -16,16 +15,18 @@ import java.util.List;
  * @author Uros
  */
 public class Country implements Serializable, AbstractDO {
-
+    
     private Long idCountry;
     private String name;
+    private List<City> cities;
 
     public Country() {
     }
 
-    public Country(Long idCountry, String name) {
+    public Country(Long idCountry, String name, List<City> cities) {
         this.idCountry = idCountry;
         this.name = name;
+        this.cities = cities;
     }
 
     public Long getIdCountry() {
@@ -42,6 +43,14 @@ public class Country implements Serializable, AbstractDO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<City> getCities() {
+        return cities;
+    }
+
+    public void setCities(List<City> cities) {
+        this.cities = cities;
     }
 
     @Override
@@ -69,11 +78,6 @@ public class Country implements Serializable, AbstractDO {
     @Override
     public String getPrimaryKey() {
         return getTable() + ".id_country = " + idCountry;
-    }
-
-    @Override
-    public AbstractDO getObject(ResultSet resultSet) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
