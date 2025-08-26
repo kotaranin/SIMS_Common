@@ -7,7 +7,6 @@ package domain;
 import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,13 +18,15 @@ public class StudyLevel implements Serializable, AbstractDO {
 
     private Long idStudyLevel;
     private String name;
+    private List<StudyProgram> studyPrograms;
 
     public StudyLevel() {
     }
 
-    public StudyLevel(Long idStudyLevel, String name) {
+    public StudyLevel(Long idStudyLevel, String name, List<StudyProgram> studyPrograms) {
         this.idStudyLevel = idStudyLevel;
         this.name = name;
+        this.studyPrograms = studyPrograms;
     }
 
     public Long getIdStudyLevel() {
@@ -42,6 +43,14 @@ public class StudyLevel implements Serializable, AbstractDO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<StudyProgram> getStudyPrograms() {
+        return studyPrograms;
+    }
+
+    public void setStudyPrograms(List<StudyProgram> studyPrograms) {
+        this.studyPrograms = studyPrograms;
     }
 
     @Override

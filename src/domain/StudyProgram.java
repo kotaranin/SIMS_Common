@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -20,14 +21,16 @@ public class StudyProgram implements Serializable, AbstractDO {
     private Long idStudyProgram;
     private String name;
     private StudyLevel studyLevel;
+    private List<domain.Module> modules;
 
     public StudyProgram() {
     }
 
-    public StudyProgram(Long idStudyProgram, String name, StudyLevel studyLevel) {
+    public StudyProgram(Long idStudyProgram, String name, StudyLevel studyLevel, List<Module> modules) {
         this.idStudyProgram = idStudyProgram;
         this.name = name;
         this.studyLevel = studyLevel;
+        this.modules = modules;
     }
 
     public Long getIdStudyProgram() {
@@ -52,6 +55,36 @@ public class StudyProgram implements Serializable, AbstractDO {
 
     public void setStudyLevel(StudyLevel studyLevel) {
         this.studyLevel = studyLevel;
+    }
+
+    public List<Module> getModules() {
+        return modules;
+    }
+
+    public void setModules(List<Module> modules) {
+        this.modules = modules;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 79 * hash + Objects.hashCode(this.idStudyProgram);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final StudyProgram other = (StudyProgram) obj;
+        return Objects.equals(this.idStudyProgram, other.idStudyProgram);
     }
 
     @Override
@@ -82,7 +115,7 @@ public class StudyProgram implements Serializable, AbstractDO {
 
     @Override
     public String getPrimaryKey() {
-        return getTable() + ".id_study_program = " + idStudyProgram;
+        return getTable() + ".id_study_program = " + idStudyProgram + " AND " + getTable() + ".id_study_level = " + studyLevel.getIdStudyLevel();
     }
 
     @Override

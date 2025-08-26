@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -54,6 +55,28 @@ public class Module implements Serializable, AbstractDO {
     }
 
     @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 11 * hash + Objects.hashCode(this.idModule);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Module other = (Module) obj;
+        return Objects.equals(this.idModule, other.idModule);
+    }
+
+    @Override
     public String toString() {
         return name;
     }
@@ -85,7 +108,7 @@ public class Module implements Serializable, AbstractDO {
 
     @Override
     public String getPrimaryKey() {
-        return getTable() + ".id_module = " + idModule;
+        return getTable() + ".id_module = " + idModule + " AND " + getTable() + ".id_study_program = " + studyProgram.getIdStudyProgram();
     }
 
     @Override
