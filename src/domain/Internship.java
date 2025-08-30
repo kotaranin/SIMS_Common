@@ -196,7 +196,7 @@ public class Internship implements Serializable, AbstractDO {
             internship.setCompany(company);
             Student student = new Student();
             student.setIdStudent(resultSet.getLong(getTable() + ".id_student"));
-            student.setIndex(resultSet.getString(getTable() + ".index"));
+            student.setIndexNumber(resultSet.getString(getTable() + ".index"));
             student.setFirstName(resultSet.getString(getTable() + ".first_name"));
             student.setLastName(resultSet.getString(getTable() + ".last_name"));
             student.setDateOfBirth(LocalDate.parse(resultSet.getString(getTable() + ".date_of_birth")));

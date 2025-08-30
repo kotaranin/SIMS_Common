@@ -7,7 +7,6 @@ package domain;
 import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,7 +18,7 @@ import java.util.List;
 public class Student implements Serializable, AbstractDO {
 
     private Long idStudent;
-    private String index;
+    private String indexNumber;
     private String firstName;
     private String lastName;
     private LocalDate dateOfBirth;
@@ -31,9 +30,9 @@ public class Student implements Serializable, AbstractDO {
     public Student() {
     }
 
-    public Student(Long idStudent, String index, String firstName, String lastName, LocalDate dateOfBirth, Integer yearOfStudy, City city, StudyProgram studyProgram, Module module) {
+    public Student(Long idStudent, String indexNumber, String firstName, String lastName, LocalDate dateOfBirth, Integer yearOfStudy, City city, StudyProgram studyProgram, Module module) {
         this.idStudent = idStudent;
-        this.index = index;
+        this.indexNumber = indexNumber;
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
@@ -51,12 +50,12 @@ public class Student implements Serializable, AbstractDO {
         this.idStudent = idStudent;
     }
 
-    public String getIndex() {
-        return index;
+    public String getIndexNumber() {
+        return indexNumber;
     }
 
-    public void setIndex(String index) {
-        this.index = index;
+    public void setIndexNumber(String indexNumber) {
+        this.indexNumber = indexNumber;
     }
 
     public String getFirstName() {
@@ -117,7 +116,7 @@ public class Student implements Serializable, AbstractDO {
 
     @Override
     public String toString() {
-        return firstName + " " + lastName;
+        return firstName;
     }
 
     @Override
@@ -131,11 +130,21 @@ public class Student implements Serializable, AbstractDO {
         while (resultSet.next()) {
             Student student = new Student();
             student.setIdStudent(resultSet.getLong(getTable() + ".id_student"));
-            student.setIndex(resultSet.getString(getTable() + ".index"));
+            student.setIndexNumber(resultSet.getString(getTable() + ".index_number"));
             student.setFirstName(resultSet.getString(getTable() + ".first_name"));
             student.setLastName(resultSet.getString(getTable() + ".last_name"));
             student.setDateOfBirth(LocalDate.parse(resultSet.getString(getTable() + ".date_of_birth")));
             student.setYearOfStudy(resultSet.getInt(getTable() + ".year_of_study"));
+
+            City city = new City();
+            city.setIdCity(resultSet.getLong(city.getTable() + ".id_city"));
+            city.setName(resultSet.getString(city.getTable() + ".name"));
+            Country country = new Country();
+            country.setIdCountry(resultSet.getLong(country.getTable() + ".id_country"));
+            country.setName(resultSet.getString(country.getTable() + ".name"));
+            city.setCountry(country);
+            student.setCity(city);
+
             StudyProgram studyProgram = new StudyProgram();
             studyProgram.setIdStudyProgram(resultSet.getLong(studyProgram.getTable() + ".id_study_program"));
             studyProgram.setName(resultSet.getString(studyProgram.getTable() + ".name"));
@@ -144,6 +153,7 @@ public class Student implements Serializable, AbstractDO {
             studyLevel.setName(resultSet.getString(studyLevel.getTable() + ".name"));
             studyProgram.setStudyLevel(studyLevel);
             student.setStudyProgram(studyProgram);
+
             Module module = new Module();
             module.setIdModule(resultSet.getLong(module.getTable() + ".id_module"));
             module.setName(resultSet.getString(module.getTable() + ".name"));
@@ -156,6 +166,7 @@ public class Student implements Serializable, AbstractDO {
             moduleProgram.setStudyLevel(levelProgram);
             module.setStudyProgram(moduleProgram);
             student.setModule(module);
+            
             students.add(student);
         }
         return students;
@@ -173,12 +184,12 @@ public class Student implements Serializable, AbstractDO {
 
     @Override
     public String getUpdateParameters() {
-        return "index = ?, first_name = ?, last_name = ?, date_of_birth = ?, year_of_study = ?, id_city = ?, id_study_program = ?, id_module = ?";
+        return "index_number = ?, first_name = ?, last_name = ?, date_of_birth = ?, year_of_study = ?, id_city = ?, id_study_program = ?, id_module = ?";
     }
 
     @Override
     public void prepareStatement(PreparedStatement preparedStatement) throws Exception {
-        preparedStatement.setString(1, index);
+        preparedStatement.setString(1, indexNumber);
         preparedStatement.setString(2, firstName);
         preparedStatement.setString(3, lastName);
         preparedStatement.setString(4, dateOfBirth.toString());
@@ -190,7 +201,7 @@ public class Student implements Serializable, AbstractDO {
 
     @Override
     public String getInsertColumns() {
-        return "index, first_name, last_name, date_of_birth, year_of_study, id_city, id_study_program, id_module";
+        return "index_number, first_name, last_name, date_of_birth, year_of_study, id_city, id_study_program, id_module";
     }
 
 }
