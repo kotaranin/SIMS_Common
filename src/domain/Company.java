@@ -78,9 +78,10 @@ public class Company implements Serializable, AbstractDO {
         List<AbstractDO> companies = new LinkedList<>();
         while (resultSet.next()) {
             Company company = new Company();
-            company.setIdCompany(resultSet.getLong(getTable()+".id_city"));
+            company.setIdCompany(resultSet.getLong(getTable()+".id_company"));
             company.setName(resultSet.getString(getTable() + ".name"));
             company.setAddress(resultSet.getString(getTable() + ".address"));
+            
             City city = new City();
             city.setIdCity(resultSet.getLong(city.getTable() + ".id_city"));
             city.setName(resultSet.getString(city.getTable() + ".name"));
@@ -89,7 +90,8 @@ public class Company implements Serializable, AbstractDO {
             country.setName(resultSet.getString(country.getTable() + ".name"));
             city.setCountry(country);
             company.setCity(city);
-            companies.add(city);
+            
+            companies.add(company);
         }
         return companies;
     }
