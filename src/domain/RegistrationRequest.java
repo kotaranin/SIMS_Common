@@ -20,18 +20,22 @@ public class RegistrationRequest implements AbstractDO {
     private String lastName;
     private String email;
     private String password;
+    private String question;
+    private String answer;
     private boolean admin;
     private StudyLevel studyLevel;
 
     public RegistrationRequest() {
     }
 
-    public RegistrationRequest(Long idRegistrationRequest, String firstName, String lastName, String email, String password, boolean admin, StudyLevel studyLevel) {
+    public RegistrationRequest(Long idRegistrationRequest, String firstName, String lastName, String email, String password, String question, String answer, boolean admin, StudyLevel studyLevel) {
         this.idRegistrationRequest = idRegistrationRequest;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.question = question;
+        this.answer = answer;
         this.admin = admin;
         this.studyLevel = studyLevel;
     }
@@ -76,6 +80,22 @@ public class RegistrationRequest implements AbstractDO {
         this.password = password;
     }
 
+    public String getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
+
     public boolean isAdmin() {
         return admin;
     }
@@ -112,6 +132,8 @@ public class RegistrationRequest implements AbstractDO {
             registrationRequest.setLastName(resultSet.getString(getTable() + ".last_name"));
             registrationRequest.setEmail(resultSet.getString(getTable() + ".email"));
             registrationRequest.setPassword(resultSet.getString(getTable() + ".password"));
+            registrationRequest.setQuestion(resultSet.getString(getTable() + ".question"));
+            registrationRequest.setAnswer(resultSet.getString(getTable() + ".answer"));
             registrationRequest.setAdmin(resultSet.getBoolean(getTable() + ".admin"));
             StudyLevel studyLevel = new StudyLevel();
             studyLevel.setIdStudyLevel(resultSet.getLong(studyLevel.getTable() + ".id_study_level"));
@@ -129,17 +151,17 @@ public class RegistrationRequest implements AbstractDO {
 
     @Override
     public String getInsertColumns() {
-        return "first_name, last_name, email, password, admin, id_study_level";
+        return "first_name, last_name, email, password, question, answer, admin, id_study_level";
     }
 
     @Override
     public String getInsertParameters() {
-        return "?, ?, ?, ?, ?, ?";
+        return "?, ?, ?, ?, ?, ?, ?, ?";
     }
 
     @Override
     public String getUpdateParameters() {
-        return "first_name = ?, last_name = ?, email = ?, password = ?, admin = ?, id_study_level = ?";
+        return "first_name = ?, last_name = ?, email = ?, password = ?, question = ?, answer = ?, admin = ?, id_study_level = ?";
     }
 
     @Override
@@ -148,7 +170,9 @@ public class RegistrationRequest implements AbstractDO {
         preparedStatement.setString(2, lastName);
         preparedStatement.setString(3, email);
         preparedStatement.setString(4, password);
-        preparedStatement.setBoolean(5, admin);
-        preparedStatement.setLong(6, studyLevel.getIdStudyLevel());
+        preparedStatement.setString(5, question);
+        preparedStatement.setString(6, answer);
+        preparedStatement.setBoolean(7, admin);
+        preparedStatement.setLong(8, studyLevel.getIdStudyLevel());
     }
 }

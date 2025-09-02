@@ -23,18 +23,22 @@ public class StudentOfficer implements Serializable, AbstractDO {
     private String lastName;
     private String email;
     private String password;
+    private String question;
+    private String answer;
     private boolean admin;
     private StudyLevel studyLevel;
 
     public StudentOfficer() {
     }
 
-    public StudentOfficer(Long idStudentOfficer, String firstName, String lastName, String email, String password, boolean admin, StudyLevel studyLevel) {
+    public StudentOfficer(Long idStudentOfficer, String firstName, String lastName, String email, String password, String question, String answer, boolean admin, StudyLevel studyLevel) {
         this.idStudentOfficer = idStudentOfficer;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.question = question;
+        this.answer = answer;
         this.admin = admin;
         this.studyLevel = studyLevel;
     }
@@ -77,6 +81,22 @@ public class StudentOfficer implements Serializable, AbstractDO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
     }
 
     public boolean isAdmin() {
@@ -141,6 +161,8 @@ public class StudentOfficer implements Serializable, AbstractDO {
             studentOfficer.setLastName(resultSet.getString(getTable() + ".last_name"));
             studentOfficer.setEmail(resultSet.getString(getTable() + ".email"));
             studentOfficer.setPassword(resultSet.getString(getTable() + ".password"));
+            studentOfficer.setQuestion(resultSet.getString(getTable() + ".question"));
+            studentOfficer.setAnswer(resultSet.getString(getTable() + ".answer"));
             studentOfficer.setAdmin(resultSet.getBoolean(getTable() + ".admin"));
             StudyLevel studyLevel = new StudyLevel();
             studyLevel.setIdStudyLevel(resultSet.getLong(studyLevel.getTable() + ".id_study_level"));
@@ -158,12 +180,12 @@ public class StudentOfficer implements Serializable, AbstractDO {
 
     @Override
     public String getInsertParameters() {
-        return "?, ?, ?, ?, ?, ?";
+        return "?, ?, ?, ?, ?, ?, ?, ?";
     }
 
     @Override
     public String getUpdateParameters() {
-        return "first_name = ?, last_name = ?, email = ?, password = ?, admin = ?, id_study_level = ?";
+        return "first_name = ?, last_name = ?, email = ?, password = ?, question = ?, answer = ?, admin = ?, id_study_level = ?";
     }
 
     @Override
@@ -172,13 +194,15 @@ public class StudentOfficer implements Serializable, AbstractDO {
         preparedStatement.setString(2, lastName);
         preparedStatement.setString(3, email);
         preparedStatement.setString(4, password);
-        preparedStatement.setBoolean(5, admin);
-        preparedStatement.setLong(6, studyLevel.getIdStudyLevel());
+        preparedStatement.setString(5, question);
+        preparedStatement.setString(6, answer);
+        preparedStatement.setBoolean(7, admin);
+        preparedStatement.setLong(8, studyLevel.getIdStudyLevel());
     }
 
     @Override
     public String getInsertColumns() {
-        return "first_name, last_name, email, password, admin, id_study_level";
+        return "first_name, last_name, email, password, question, answer, admin, id_study_level";
     }
 
 }
