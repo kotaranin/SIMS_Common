@@ -22,23 +22,27 @@ public class StudentOfficer implements Serializable, AbstractDO {
     private String firstName;
     private String lastName;
     private String email;
-    private String password;
+    private String passwordSalt;
+    private String hashedPassword;
     private String question;
-    private String answer;
+    private String answerSalt;
+    private String hashedAnswer;
     private boolean admin;
     private StudyLevel studyLevel;
 
     public StudentOfficer() {
     }
 
-    public StudentOfficer(Long idStudentOfficer, String firstName, String lastName, String email, String password, String question, String answer, boolean admin, StudyLevel studyLevel) {
+    public StudentOfficer(Long idStudentOfficer, String firstName, String lastName, String email, String passwordSalt, String hashedPassword, String question, String answerSalt, String hashedAnswer, boolean admin, StudyLevel studyLevel) {
         this.idStudentOfficer = idStudentOfficer;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.password = password;
+        this.passwordSalt = passwordSalt;
+        this.hashedPassword = hashedPassword;
         this.question = question;
-        this.answer = answer;
+        this.answerSalt = answerSalt;
+        this.hashedAnswer = hashedAnswer;
         this.admin = admin;
         this.studyLevel = studyLevel;
     }
@@ -75,12 +79,20 @@ public class StudentOfficer implements Serializable, AbstractDO {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPasswordSalt() {
+        return passwordSalt;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPasswordSalt(String passwordSalt) {
+        this.passwordSalt = passwordSalt;
+    }
+
+    public String getHashedPassword() {
+        return hashedPassword;
+    }
+
+    public void setHashedPassword(String hashedPassword) {
+        this.hashedPassword = hashedPassword;
     }
 
     public String getQuestion() {
@@ -91,12 +103,20 @@ public class StudentOfficer implements Serializable, AbstractDO {
         this.question = question;
     }
 
-    public String getAnswer() {
-        return answer;
+    public String getAnswerSalt() {
+        return answerSalt;
     }
 
-    public void setAnswer(String answer) {
-        this.answer = answer;
+    public void setAnswerSalt(String answerSalt) {
+        this.answerSalt = answerSalt;
+    }
+
+    public String getHashedAnswer() {
+        return hashedAnswer;
+    }
+
+    public void setHashedAnswer(String hashedAnswer) {
+        this.hashedAnswer = hashedAnswer;
     }
 
     public boolean isAdmin() {
@@ -124,7 +144,7 @@ public class StudentOfficer implements Serializable, AbstractDO {
     public int hashCode() {
         int hash = 5;
         hash = 71 * hash + Objects.hashCode(this.email);
-        hash = 71 * hash + Objects.hashCode(this.password);
+        hash = 71 * hash + Objects.hashCode(this.hashedPassword);
         return hash;
     }
 
@@ -143,7 +163,7 @@ public class StudentOfficer implements Serializable, AbstractDO {
         if (!Objects.equals(this.email, other.email)) {
             return false;
         }
-        return Objects.equals(this.password, other.password);
+        return Objects.equals(this.hashedPassword, other.hashedPassword);
     }
 
     @Override
@@ -160,9 +180,11 @@ public class StudentOfficer implements Serializable, AbstractDO {
             studentOfficer.setFirstName(resultSet.getString(getTable() + ".first_name"));
             studentOfficer.setLastName(resultSet.getString(getTable() + ".last_name"));
             studentOfficer.setEmail(resultSet.getString(getTable() + ".email"));
-            studentOfficer.setPassword(resultSet.getString(getTable() + ".password"));
+            studentOfficer.setPasswordSalt(resultSet.getString(getTable() + ".password_salt"));
+            studentOfficer.setHashedPassword(resultSet.getString(getTable() + ".hashed_password"));
             studentOfficer.setQuestion(resultSet.getString(getTable() + ".question"));
-            studentOfficer.setAnswer(resultSet.getString(getTable() + ".answer"));
+            studentOfficer.setAnswerSalt(resultSet.getString(getTable() + ".answer_salt"));
+            studentOfficer.setHashedAnswer(resultSet.getString(getTable() + ".hashed_answer"));
             studentOfficer.setAdmin(resultSet.getBoolean(getTable() + ".admin"));
             StudyLevel studyLevel = new StudyLevel();
             studyLevel.setIdStudyLevel(resultSet.getLong(studyLevel.getTable() + ".id_study_level"));
@@ -180,12 +202,12 @@ public class StudentOfficer implements Serializable, AbstractDO {
 
     @Override
     public String getInsertParameters() {
-        return "?, ?, ?, ?, ?, ?, ?, ?";
+        return "?, ?, ?, ?, ?, ?, ?, ?, ?, ?";
     }
 
     @Override
     public String getUpdateParameters() {
-        return "first_name = ?, last_name = ?, email = ?, password = ?, question = ?, answer = ?, admin = ?, id_study_level = ?";
+        return "first_name = ?, last_name = ?, email = ?, password_salt = ?, hashed_password = ?, question = ?, answer_salt = ?, hashed_answer = ?, admin = ?, id_study_level = ?";
     }
 
     @Override
@@ -193,16 +215,18 @@ public class StudentOfficer implements Serializable, AbstractDO {
         preparedStatement.setString(1, firstName);
         preparedStatement.setString(2, lastName);
         preparedStatement.setString(3, email);
-        preparedStatement.setString(4, password);
-        preparedStatement.setString(5, question);
-        preparedStatement.setString(6, answer);
-        preparedStatement.setBoolean(7, admin);
-        preparedStatement.setLong(8, studyLevel.getIdStudyLevel());
+        preparedStatement.setString(4, passwordSalt);
+        preparedStatement.setString(5, hashedPassword);
+        preparedStatement.setString(6, question);
+        preparedStatement.setString(7, answerSalt);
+        preparedStatement.setString(8, hashedAnswer);
+        preparedStatement.setBoolean(9, admin);
+        preparedStatement.setLong(10, studyLevel.getIdStudyLevel());
     }
 
     @Override
     public String getInsertColumns() {
-        return "first_name, last_name, email, password, question, answer, admin, id_study_level";
+        return "first_name, last_name, email, password_salt, hashed_password, question, answer_salt, hashed_answer, admin, id_study_level";
     }
 
 }
