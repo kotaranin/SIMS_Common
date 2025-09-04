@@ -85,10 +85,6 @@ public class Company implements Serializable, AbstractDO {
             City city = new City();
             city.setIdCity(resultSet.getLong(city.getTable() + ".id_city"));
             city.setName(resultSet.getString(city.getTable() + ".name"));
-            Country country = new Country();
-            country.setIdCountry(resultSet.getLong(country.getTable() + ".id_country"));
-            country.setName(resultSet.getString(country.getTable() + ".name"));
-            city.setCountry(country);
             company.setCity(city);
             
             companies.add(company);

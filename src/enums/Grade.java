@@ -9,5 +9,5 @@ package enums;
  * @author kotar
  */
 public enum Grade {
-    POLOZIO, NIJE_POLOZIO
+    SVE_OCENE, POLOZIO, NIJE_POLOZIO
 }
