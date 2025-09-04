@@ -116,7 +116,7 @@ public class Student implements Serializable, AbstractDO {
 
     @Override
     public String toString() {
-        return firstName;
+        return firstName + " " + lastName;
     }
 
     @Override
