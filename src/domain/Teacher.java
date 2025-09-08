@@ -19,7 +19,7 @@ public class Teacher implements Serializable, AbstractDO {
 
     private Long idTeacher;
     private String firstName;
-    private String lastName;
+    private String lastName; 
 
     public Teacher() {
     }

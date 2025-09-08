@@ -19,7 +19,7 @@ public class Company implements Serializable, AbstractDO {
     private Long idCompany;
     private String name;
     private String address;
-    private City city;
+    private City city; 
 
     public Company() {
     }

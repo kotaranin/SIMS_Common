@@ -56,8 +56,9 @@ public class Module implements Serializable, AbstractDO {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 11 * hash + Objects.hashCode(this.idModule);
+        int hash = 3;
+        hash = 31 * hash + Objects.hashCode(this.idModule);
+        hash = 31 * hash + Objects.hashCode(this.name);
         return hash;
     }
 
@@ -73,6 +74,9 @@ public class Module implements Serializable, AbstractDO {
             return false;
         }
         final Module other = (Module) obj;
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
         return Objects.equals(this.idModule, other.idModule);
     }
 
@@ -93,14 +97,14 @@ public class Module implements Serializable, AbstractDO {
             Module module = new Module();
             module.setIdModule(resultSet.getLong(getTable() + ".id_module"));
             module.setName(resultSet.getString(getTable() + ".name"));
-            StudyProgram studyProgram = new StudyProgram();
-            studyProgram.setIdStudyProgram(resultSet.getLong(studyProgram.getTable() + ".id_study_program"));
-            studyProgram.setName(resultSet.getString(studyProgram.getTable() + ".name"));
+            StudyProgram sp = new StudyProgram();
+            sp.setIdStudyProgram(resultSet.getLong(sp.getTable() + ".id_study_program"));
+            sp.setName(resultSet.getString(sp.getTable() + ".name"));
             StudyLevel studyLevel = new StudyLevel();
             studyLevel.setIdStudyLevel(resultSet.getLong(studyLevel.getTable() + ".id_study_level"));
             studyLevel.setName(resultSet.getString(studyLevel.getTable() + ".name"));
-            studyProgram.setStudyLevel(studyLevel);
-            module.setStudyProgram(studyProgram);
+            sp.setStudyLevel(studyLevel);
+            module.setStudyProgram(sp);
             modules.add(module);
         }
         return modules;

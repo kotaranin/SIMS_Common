@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -115,6 +116,28 @@ public class Student implements Serializable, AbstractDO {
     }
 
     @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 23 * hash + Objects.hashCode(this.idStudent);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Student other = (Student) obj;
+        return Objects.equals(this.idStudent, other.idStudent);
+    }
+
+    @Override
     public String toString() {
         return firstName + " " + lastName;
     }
@@ -136,37 +159,42 @@ public class Student implements Serializable, AbstractDO {
             student.setDateOfBirth(LocalDate.parse(resultSet.getString(getTable() + ".date_of_birth")));
             student.setYearOfStudy(resultSet.getInt(getTable() + ".year_of_study"));
 
-            City city = new City();
-            city.setIdCity(resultSet.getLong(city.getTable() + ".id_city"));
-            city.setName(resultSet.getString(city.getTable() + ".name"));
+            City c = new City();
+            c.setIdCity(resultSet.getLong(c.getTable() + ".id_city"));
+            c.setName(resultSet.getString(c.getTable() + ".name"));
             Country country = new Country();
             country.setIdCountry(resultSet.getLong(country.getTable() + ".id_country"));
             country.setName(resultSet.getString(country.getTable() + ".name"));
-            city.setCountry(country);
-            student.setCity(city);
+            c.setCountry(country);
+            student.setCity(c);
 
-            StudyProgram studyProgram = new StudyProgram();
-            studyProgram.setIdStudyProgram(resultSet.getLong(studyProgram.getTable() + ".id_study_program"));
-            studyProgram.setName(resultSet.getString(studyProgram.getTable() + ".name"));
+            StudyProgram sp = new StudyProgram();
+            sp.setIdStudyProgram(resultSet.getLong(sp.getTable() + ".id_study_program"));
+            sp.setName(resultSet.getString(sp.getTable() + ".name"));
             StudyLevel studyLevel = new StudyLevel();
             studyLevel.setIdStudyLevel(resultSet.getLong(studyLevel.getTable() + ".id_study_level"));
             studyLevel.setName(resultSet.getString(studyLevel.getTable() + ".name"));
-            studyProgram.setStudyLevel(studyLevel);
-            student.setStudyProgram(studyProgram);
+            sp.setStudyLevel(studyLevel);
+            student.setStudyProgram(sp);
 
-            Module module = new Module();
-            module.setIdModule(resultSet.getLong(module.getTable() + ".id_module"));
-            module.setName(resultSet.getString(module.getTable() + ".name"));
-            StudyProgram moduleProgram = new StudyProgram();
-            moduleProgram.setIdStudyProgram(resultSet.getLong(moduleProgram.getTable() + ".id_study_program"));
-            moduleProgram.setName(resultSet.getString(moduleProgram.getTable() + ".name"));
-            StudyLevel levelProgram = new StudyLevel();
-            levelProgram.setIdStudyLevel(resultSet.getLong(levelProgram.getTable() + ".id_study_level"));
-            levelProgram.setName(resultSet.getString(levelProgram.getTable() + ".name"));
-            moduleProgram.setStudyLevel(levelProgram);
-            module.setStudyProgram(moduleProgram);
-            student.setModule(module);
-            
+            Long idModule = resultSet.getLong("module.id_module");
+            if (resultSet.wasNull()) {
+                student.setModule(null);
+            } else {
+                Module m = new Module();
+                m.setIdModule(idModule);
+                m.setName(resultSet.getString(m.getTable() + ".name"));
+                StudyProgram moduleProgram = new StudyProgram();
+                moduleProgram.setIdStudyProgram(resultSet.getLong(moduleProgram.getTable() + ".id_study_program"));
+                moduleProgram.setName(resultSet.getString(moduleProgram.getTable() + ".name"));
+                StudyLevel levelProgram = new StudyLevel();
+                levelProgram.setIdStudyLevel(resultSet.getLong(levelProgram.getTable() + ".id_study_level"));
+                levelProgram.setName(resultSet.getString(levelProgram.getTable() + ".name"));
+                moduleProgram.setStudyLevel(levelProgram);
+                m.setStudyProgram(moduleProgram);
+                student.setModule(m);
+            }
+
             students.add(student);
         }
         return students;
@@ -196,7 +224,11 @@ public class Student implements Serializable, AbstractDO {
         preparedStatement.setInt(5, yearOfStudy);
         preparedStatement.setLong(6, city.getIdCity());
         preparedStatement.setLong(7, studyProgram.getIdStudyProgram());
-        preparedStatement.setLong(8, module.getIdModule());
+        if (module != null) {
+            preparedStatement.setLong(8, module.getIdModule());
+        } else {
+            preparedStatement.setNull(8, java.sql.Types.BIGINT);
+        }
     }
 
     @Override

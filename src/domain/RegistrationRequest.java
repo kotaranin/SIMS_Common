@@ -24,13 +24,13 @@ public class RegistrationRequest implements AbstractDO {
     private String question;
     private String answerSalt;
     private String hashedAnswer;
-    private boolean admin;
+    private Boolean admin;
     private StudyLevel studyLevel;
 
     public RegistrationRequest() {
     }
 
-    public RegistrationRequest(Long idRegistrationRequest, String firstName, String lastName, String email, String passwordSalt, String hashedPassword, String question, String answerSalt, String hashedAnswer, boolean admin, StudyLevel studyLevel) {
+    public RegistrationRequest(Long idRegistrationRequest, String firstName, String lastName, String email, String passwordSalt, String hashedPassword, String question, String answerSalt, String hashedAnswer, Boolean admin, StudyLevel studyLevel) {
         this.idRegistrationRequest = idRegistrationRequest;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -116,11 +116,11 @@ public class RegistrationRequest implements AbstractDO {
         this.hashedAnswer = hashedAnswer;
     }
 
-    public boolean isAdmin() {
+    public Boolean getAdmin() {
         return admin;
     }
 
-    public void setAdmin(boolean admin) {
+    public void setAdmin(Boolean admin) {
         this.admin = admin;
     }
 
@@ -157,10 +157,10 @@ public class RegistrationRequest implements AbstractDO {
             registrationRequest.setAnswerSalt(resultSet.getString(getTable() + ".answer_salt"));
             registrationRequest.setHashedAnswer(resultSet.getString(getTable() + ".hashed_answer"));
             registrationRequest.setAdmin(resultSet.getBoolean(getTable() + ".admin"));
-            StudyLevel studyLevel = new StudyLevel();
-            studyLevel.setIdStudyLevel(resultSet.getLong(studyLevel.getTable() + ".id_study_level"));
-            studyLevel.setName(resultSet.getString(studyLevel.getTable() + ".name"));
-            registrationRequest.setStudyLevel(studyLevel);
+            StudyLevel sl = new StudyLevel();
+            sl.setIdStudyLevel(resultSet.getLong(sl.getTable() + ".id_study_level"));
+            sl.setName(resultSet.getString(sl.getTable() + ".name"));
+            registrationRequest.setStudyLevel(sl);
             registrationRequests.add(registrationRequest);
         }
         return registrationRequests;

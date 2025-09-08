@@ -18,7 +18,7 @@ public class StudyLevel implements Serializable, AbstractDO {
 
     private Long idStudyLevel;
     private String name;
-    private List<StudyProgram> studyPrograms;
+    private List<StudyProgram> studyPrograms; 
 
     public StudyLevel() {
     }

@@ -67,8 +67,9 @@ public class StudyProgram implements Serializable, AbstractDO {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 79 * hash + Objects.hashCode(this.idStudyProgram);
+        int hash = 7;
+        hash = 83 * hash + Objects.hashCode(this.idStudyProgram);
+        hash = 83 * hash + Objects.hashCode(this.name);
         return hash;
     }
 
@@ -84,6 +85,9 @@ public class StudyProgram implements Serializable, AbstractDO {
             return false;
         }
         final StudyProgram other = (StudyProgram) obj;
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
         return Objects.equals(this.idStudyProgram, other.idStudyProgram);
     }
 
@@ -104,10 +108,10 @@ public class StudyProgram implements Serializable, AbstractDO {
             StudyProgram studyProgram = new StudyProgram();
             studyProgram.setIdStudyProgram(resultSet.getLong(getTable() + ".id_study_program"));
             studyProgram.setName(resultSet.getString(getTable() + ".name"));
-            StudyLevel studyLevel = new StudyLevel();
-            studyLevel.setIdStudyLevel(resultSet.getLong(studyLevel.getTable() + ".id_study_level"));
-            studyLevel.setName(resultSet.getString(studyLevel.getTable() + ".name"));
-            studyProgram.setStudyLevel(studyLevel);
+            StudyLevel sl = new StudyLevel();
+            sl.setIdStudyLevel(resultSet.getLong(sl.getTable() + ".id_study_level"));
+            sl.setName(resultSet.getString(sl.getTable() + ".name"));
+            studyProgram.setStudyLevel(sl);
             studyPrograms.add(studyProgram);
         }
         return studyPrograms;

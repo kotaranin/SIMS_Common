@@ -97,7 +97,7 @@ public class Country implements Serializable, AbstractDO {
 
     @Override
     public String getInsertColumns() {
-        return "name";
+        return "name"; 
     }
 
 }

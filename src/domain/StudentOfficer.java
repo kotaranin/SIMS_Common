@@ -27,13 +27,13 @@ public class StudentOfficer implements Serializable, AbstractDO {
     private String question;
     private String answerSalt;
     private String hashedAnswer;
-    private boolean admin;
+    private Boolean admin;
     private StudyLevel studyLevel;
 
     public StudentOfficer() {
     }
 
-    public StudentOfficer(Long idStudentOfficer, String firstName, String lastName, String email, String passwordSalt, String hashedPassword, String question, String answerSalt, String hashedAnswer, boolean admin, StudyLevel studyLevel) {
+    public StudentOfficer(Long idStudentOfficer, String firstName, String lastName, String email, String passwordSalt, String hashedPassword, String question, String answerSalt, String hashedAnswer, Boolean admin, StudyLevel studyLevel) {
         this.idStudentOfficer = idStudentOfficer;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -119,11 +119,11 @@ public class StudentOfficer implements Serializable, AbstractDO {
         this.hashedAnswer = hashedAnswer;
     }
 
-    public boolean isAdmin() {
+    public Boolean getAdmin() {
         return admin;
     }
 
-    public void setAdmin(boolean admin) {
+    public void setAdmin(Boolean admin) {
         this.admin = admin;
     }
 
@@ -186,10 +186,12 @@ public class StudentOfficer implements Serializable, AbstractDO {
             studentOfficer.setAnswerSalt(resultSet.getString(getTable() + ".answer_salt"));
             studentOfficer.setHashedAnswer(resultSet.getString(getTable() + ".hashed_answer"));
             studentOfficer.setAdmin(resultSet.getBoolean(getTable() + ".admin"));
-            StudyLevel studyLevel = new StudyLevel();
-            studyLevel.setIdStudyLevel(resultSet.getLong(studyLevel.getTable() + ".id_study_level"));
-            studyLevel.setName(resultSet.getString(studyLevel.getTable() + ".name"));
-            studentOfficer.setStudyLevel(studyLevel);
+            
+            StudyLevel sl = new StudyLevel();
+            sl.setIdStudyLevel(resultSet.getLong(sl.getTable() + ".id_study_level"));
+            sl.setName(resultSet.getString(sl.getTable() + ".name"));
+            studentOfficer.setStudyLevel(sl);
+            
             studentOfficers.add(studentOfficer);
         }
         return studentOfficers;

@@ -29,7 +29,7 @@ public class Internship implements Serializable, AbstractDO {
     private Report report;
     private StudentOfficer studentOfficer;
     private Company company;
-    private Student student;
+    private Student student; 
 
     public Internship() {
     }
@@ -157,46 +157,46 @@ public class Internship implements Serializable, AbstractDO {
             internship.setDefenseDate(LocalDate.parse(resultSet.getString(getTable() + ".defense_date")));
             internship.setGrade(Grade.valueOf(resultSet.getString(getTable() + ".grade")));
 
-            Teacher teacher = new Teacher();
-            teacher.setIdTeacher(resultSet.getLong(teacher.getTable() + ".id_teacher"));
-            teacher.setFirstName(resultSet.getString(teacher.getTable() + ".first_name"));
-            teacher.setLastName(resultSet.getString(teacher.getTable() + ".last_name"));
-            internship.setTeacher(teacher);
+            Teacher t = new Teacher();
+            t.setIdTeacher(resultSet.getLong(t.getTable() + ".id_teacher"));
+            t.setFirstName(resultSet.getString(t.getTable() + ".first_name"));
+            t.setLastName(resultSet.getString(t.getTable() + ".last_name"));
+            internship.setTeacher(t);
 
-            ExamPeriod examPeriod = new ExamPeriod();
-            examPeriod.setIdExamPeriod(resultSet.getLong(examPeriod.getTable() + ".id_exam_period"));
-            examPeriod.setName(resultSet.getString(examPeriod.getTable() + ".name"));
-            examPeriod.setStartDate(LocalDate.parse(resultSet.getString(examPeriod.getTable() + ".start_date")));
-            examPeriod.setEndDate(LocalDate.parse(resultSet.getString(examPeriod.getTable() + ".end_date")));
-            internship.setExamPeriod(examPeriod);
+            ExamPeriod ep = new ExamPeriod();
+            ep.setIdExamPeriod(resultSet.getLong(ep.getTable() + ".id_exam_period"));
+            ep.setName(resultSet.getString(ep.getTable() + ".name"));
+            ep.setStartDate(LocalDate.parse(resultSet.getString(ep.getTable() + ".start_date")));
+            ep.setEndDate(LocalDate.parse(resultSet.getString(ep.getTable() + ".end_date")));
+            internship.setExamPeriod(ep);
 
-            Report report = new Report();
-            report.setIdReport(resultSet.getLong(report.getTable() + ".id_report"));
-            report.setFileName(resultSet.getString(report.getTable() + ".file_name"));
-            report.setFileContent(resultSet.getBytes(report.getTable() + ".file_content"));
-            internship.setReport(report);
+            Report r = new Report();
+            r.setIdReport(resultSet.getLong(r.getTable() + ".id_report"));
+            r.setFileName(resultSet.getString(r.getTable() + ".file_name"));
+            r.setFileContent(resultSet.getBytes(r.getTable() + ".file_content"));
+            internship.setReport(r);
 
-            StudentOfficer studentOfficer = new StudentOfficer();
-            studentOfficer.setIdStudentOfficer(resultSet.getLong(studentOfficer.getTable() + ".id_student_officer"));
-            studentOfficer.setFirstName(resultSet.getString(studentOfficer.getTable() + ".first_name"));
-            studentOfficer.setLastName(resultSet.getString(studentOfficer.getTable() + ".last_name"));
-            studentOfficer.setEmail(resultSet.getString(studentOfficer.getTable() + ".email"));
-            internship.setStudentOfficer(studentOfficer);
+            StudentOfficer so = new StudentOfficer();
+            so.setIdStudentOfficer(resultSet.getLong(so.getTable() + ".id_student_officer"));
+            so.setFirstName(resultSet.getString(so.getTable() + ".first_name"));
+            so.setLastName(resultSet.getString(so.getTable() + ".last_name"));
+            so.setEmail(resultSet.getString(so.getTable() + ".email"));
+            internship.setStudentOfficer(so);
 
-            Company company = new Company();
-            company.setIdCompany(resultSet.getLong(company.getTable() + ".id_company"));
-            company.setName(resultSet.getString(company.getTable() + ".name"));
-            company.setAddress(resultSet.getString(company.getTable() + ".address"));
-            internship.setCompany(company);
+            Company c = new Company();
+            c.setIdCompany(resultSet.getLong(c.getTable() + ".id_company"));
+            c.setName(resultSet.getString(c.getTable() + ".name"));
+            c.setAddress(resultSet.getString(c.getTable() + ".address"));
+            internship.setCompany(c);
 
-            Student student = new Student();
-            student.setIdStudent(resultSet.getLong(student.getTable() + ".id_student"));
-            student.setIndexNumber(resultSet.getString(student.getTable() + ".index_number"));
-            student.setFirstName(resultSet.getString(student.getTable() + ".first_name"));
-            student.setLastName(resultSet.getString(student.getTable() + ".last_name"));
-            student.setDateOfBirth(LocalDate.parse(resultSet.getString(student.getTable() + ".date_of_birth")));
-            student.setYearOfStudy(resultSet.getInt(student.getTable() + ".year_of_study"));
-            internship.setStudent(student);
+            Student s = new Student();
+            s.setIdStudent(resultSet.getLong(s.getTable() + ".id_student"));
+            s.setIndexNumber(resultSet.getString(s.getTable() + ".index_number"));
+            s.setFirstName(resultSet.getString(s.getTable() + ".first_name"));
+            s.setLastName(resultSet.getString(s.getTable() + ".last_name"));
+            s.setDateOfBirth(LocalDate.parse(resultSet.getString(s.getTable() + ".date_of_birth")));
+            s.setYearOfStudy(resultSet.getInt(s.getTable() + ".year_of_study"));
+            internship.setStudent(s);
 
             internships.add(internship);
         }

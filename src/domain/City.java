@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class City implements Serializable, AbstractDO {
 
-    private Long idCity;
+    private Long idCity; 
     private String name;
     private Country country;
 
